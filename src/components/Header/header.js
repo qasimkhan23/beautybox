@@ -22,7 +22,7 @@ const Header = (props ) => {
 
     const logo = () => (
         <Link to="/" className={style.logo}>
-        <img alt= "beautybox_logo" src="/images/beautybox_logo.png"/>
+        <img alt= "beautybox logo" src="/images/beautybox_logo.png"/>
         </Link>
     )
 

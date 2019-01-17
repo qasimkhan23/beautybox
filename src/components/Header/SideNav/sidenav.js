@@ -13,7 +13,8 @@ const SideNavigation = (props) => {
         }}
         >
           
-       
+       <div> News </div>
+       <div> Photos </div>
 
         </SideNav>
         </div>
