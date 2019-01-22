@@ -2,17 +2,17 @@ import React from 'react'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
-const NavBar = () => {
+const Navbar = () => {
     return(
         <div>
-        <AppBar position="static">
+        <AppBar position="fixed">
             <Toolbar>
                 <Typography variant="title" color="inherit">
-                React & Material-UI Sample Application
+                Beauty Box - Latest Fashion News & Updates
                 </Typography>
             </Toolbar>
         </AppBar>
         </div>
     )
 }
-export default NavBar;
+export default Navbar;
