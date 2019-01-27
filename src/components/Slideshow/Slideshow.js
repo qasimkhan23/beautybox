@@ -13,6 +13,7 @@ import {
   MDBCardText,
   MDBBtn
 } from "mdbreact";
+import Card from "@material-ui/core/Card";
 
 const Slider = () => {
   return (
@@ -25,7 +26,9 @@ const Slider = () => {
         showIndicators={true}
         multiItem
       >
-        <div style={{ backgroundColor: "#faefff", marginTop: 50, padding: 20 }}>
+        <Card
+          style={{ backgroundColor: "#faefff", marginTop: 50, padding: 20 }}
+        >
           <MDBCarouselInner>
             <MDBCarouselItem itemId="1">
               <MDBRow>
@@ -187,7 +190,7 @@ const Slider = () => {
               </MDBRow>
             </MDBCarouselItem>
           </MDBCarouselInner>
-        </div>
+        </Card>
       </MDBCarousel>
     </MDBContainer>
   );
