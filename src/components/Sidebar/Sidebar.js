@@ -38,7 +38,7 @@ class TemporaryDrawer extends React.Component {
     const { classes } = this.props;
 
     const sideList = (
-      <div className={classes.list}>
+      <div className={classes.list} style={{ backgroundColor: "#faefff" }}>
         <List>
           {["News", "Beauty Product Reviews", "Fashion Trends"].map(
             (text, index) => (
@@ -92,7 +92,7 @@ class TemporaryDrawer extends React.Component {
     );
 
     return (
-      <div>
+      <div style={{ backgroundColor: "red" }}>
         <Navbar click={this.toggleDrawer("left", true)} />
         {/* 
         <Button onClick={this.toggleDrawer("right", true)}>Open Right</Button>
