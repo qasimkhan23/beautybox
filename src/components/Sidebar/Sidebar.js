@@ -40,7 +40,7 @@ class TemporaryDrawer extends React.Component {
     const sideList = (
       <div className={classes.list} style={{ backgroundColor: "#faefff" }}>
         <List>
-          {["News", "Beauty Product Reviews", "Fashion Trends"].map(
+          {["Home", "Latest Fashion News", "Beauty Gallery"].map(
             (text, index) => (
               <ListItem button key={text}>
                 <ListItemIcon>

@@ -9,7 +9,7 @@ const Navbar = props => {
       <AppBar position="relative">
         <Toolbar>
           <button className="btn">
-            <i class="fas fa-bars fa-2x" onClick={props.click} s />
+            <i class="fas fa-bars fa-1x" onClick={props.click} s />
           </button>
           <Typography
             variant="display1"
