@@ -9,23 +9,18 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
-import Navbar from "../Navbar/Navbar";
+import Navbar from "../Navbar/NavBar";
+import { withRouter } from "react-router-dom";
 
 const styles = {
   list: {
     width: 250
-  },
-  fullList: {
-    width: "auto"
   }
 };
 
 class TemporaryDrawer extends React.Component {
   state = {
-    top: false,
-    left: false,
-    bottom: false,
-    right: false
+    left: false
   };
 
   toggleDrawer = (side, open) => () => {
@@ -33,43 +28,27 @@ class TemporaryDrawer extends React.Component {
       [side]: open
     });
   };
+  handleClick = page => {
+    let { history } = this.props;
+
+    page = page.toLowerCase();
+    if (page === "home") {
+      page = "";
+    }
+    history.push({
+      pathname: `/${page}`
+    });
+  };
 
   render() {
     const { classes } = this.props;
+    console.log("props", this.props);
 
     const sideList = (
       <div className={classes.list} style={{ backgroundColor: "#faefff" }}>
         <List>
-          {["Home", "Latest Fashion News", "Beauty Gallery"].map(
-            (text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            )
-          )}
-        </List>
-        <Divider />
-        <List>
-          {["Admin Signin", "Signout"].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
-      </div>
-    );
-
-    const fullList = (
-      <div className={classes.fullList}>
-        <List>
-          {["Admin Signin", "Signout"].map((text, index) => (
-            <ListItem button key={text}>
+          {["Home", "News", "Gallery"].map((text, index) => (
+            <ListItem button key={text} onClick={() => this.handleClick(text)}>
               <ListItemIcon>
                 {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
               </ListItemIcon>
@@ -79,8 +58,8 @@ class TemporaryDrawer extends React.Component {
         </List>
         <Divider />
         <List>
-          {["All mail", "Trash", "Spam"].map((text, index) => (
-            <ListItem button key={text}>
+          {["Signin", "Signout"].map((text, index) => (
+            <ListItem button key={text} onClick={() => this.handleClick(text)}>
               <ListItemIcon>
                 {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
               </ListItemIcon>
@@ -94,10 +73,7 @@ class TemporaryDrawer extends React.Component {
     return (
       <div style={{ backgroundColor: "red" }}>
         <Navbar click={this.toggleDrawer("left", true)} />
-        {/* 
-        <Button onClick={this.toggleDrawer("right", true)}>Open Right</Button>
-        <Button onClick={this.toggleDrawer("top", true)}>Open Top</Button>
-        <Button onClick={this.toggleDrawer("bottom", true)}>Open Bottom</Button> */}
+
         <Drawer
           open={this.state.left}
           onClose={this.toggleDrawer("left", false)}
@@ -111,34 +87,7 @@ class TemporaryDrawer extends React.Component {
             {sideList}
           </div>
         </Drawer>
-        <Drawer
-          anchor="top"
-          open={this.state.top}
-          onClose={this.toggleDrawer("top", false)}
-        >
-          <div
-            tabIndex={0}
-            role="button"
-            onClick={this.toggleDrawer("top", false)}
-            onKeyDown={this.toggleDrawer("top", false)}
-          >
-            {fullList}
-          </div>
-        </Drawer>
-        <Drawer
-          anchor="bottom"
-          open={this.state.bottom}
-          onClose={this.toggleDrawer("bottom", false)}
-        >
-          <div
-            tabIndex={0}
-            role="button"
-            onClick={this.toggleDrawer("bottom", false)}
-            onKeyDown={this.toggleDrawer("bottom", false)}
-          >
-            {fullList}
-          </div>
-        </Drawer>
+
         <Drawer
           anchor="right"
           open={this.state.right}
@@ -162,4 +111,4 @@ TemporaryDrawer.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(TemporaryDrawer);
+export default withStyles(styles)(withRouter(TemporaryDrawer));
