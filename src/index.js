@@ -6,7 +6,7 @@ import "bootstrap-css-only/css/bootstrap.min.css";
 import "mdbreact/dist/css/mdb.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Routes from "./Routes/routes";
-
+import "./style.css";
 const App = () => {
   return (
     <BrowserRouter>
