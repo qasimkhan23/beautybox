@@ -45,7 +45,7 @@ class TemporaryDrawer extends React.Component {
     console.log("props", this.props);
 
     const sideList = (
-      <div className={classes.list} style={{ backgroundColor: "#faefff" }}>
+      <div className={classes.list} style={{ backgroundColor: "#f2f2f2" }}>
         <List>
           {["Home", "News", "Gallery"].map((text, index) => (
             <ListItem button key={text} onClick={() => this.handleClick(text)}>

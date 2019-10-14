@@ -14,9 +14,9 @@ const Navbar = props => {
           <Typography
             variant="display1"
             color="inherit"
-            style={{ marginLeft: 100, fontFamily: "italic" }}
+            style={{ marginLeft: 32, fontFamily: "italic" }}
           >
-            Beauty Box - Latest Fashion News & Updates
+            Beauty Box
           </Typography>
         </Toolbar>
       </AppBar>
