@@ -1,5 +1,8 @@
 .row {
-  flex: 1;
+  /* flex: 1;
+  justify-content: center; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
   flex-direction: row;
-  justify-content: space-around;
 }

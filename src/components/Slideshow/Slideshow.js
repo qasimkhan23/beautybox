@@ -4,7 +4,6 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
-import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import {
   MDBCarousel,
@@ -15,14 +14,7 @@ import {
 import React from "react";
 
 const Slider = () => {
-  // const classes = makeStyles({
-  //   card: {
-  //     maxWidth: 345
-  //   },
-  //   media: {
-  //     height: 140
-  //   }
-  // });
+  
 
   return (
     <MDBContainer>
