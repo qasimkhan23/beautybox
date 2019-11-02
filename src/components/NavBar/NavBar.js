@@ -1,7 +1,8 @@
 import React from "react";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
+import { AppBar, Toolbar, Typography } from "@material-ui/core";
+// import AppBar from "./node_modules/@material-ui/core/AppBar";
+// import Toolbar from "./node_modules/@material-ui/core/Toolbar";
+// import Typography from "./node_modules/@material-ui/core/Typography";
 import "./style.css";
 const NavBar = props => {
   return (
@@ -14,7 +15,7 @@ const NavBar = props => {
           <Typography
             variant="display1"
             color="inherit"
-            style={{ marginLeft: 32, fontFamily: "italic" }}
+            style={{ marginLeft: 32, fontSize: 32, fontFamily: "italic" }}
           >
             Beauty Box
           </Typography>

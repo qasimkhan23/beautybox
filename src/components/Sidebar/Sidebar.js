@@ -9,7 +9,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
-import NavBar from "../NavBar/NavBar";
+import NavBar from '../NavBar/NavBar'
 import { withRouter } from "react-router-dom";
 
 const styles = {
@@ -47,7 +47,7 @@ class TemporaryDrawer extends React.Component {
     const sideList = (
       <div className={classes.list} style={{ backgroundColor: "#f2f2f2" }}>
         <List>
-          {["Home", "News", "Gallery"].map((text, index) => (
+          {["Home", "Profile","News", "Gallery"].map((text, index) => (
             <ListItem button key={text} onClick={() => this.handleClick(text)}>
               <ListItemIcon>
                 {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}

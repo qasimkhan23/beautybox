@@ -14,8 +14,6 @@ import {
 import React from "react";
 
 const Slider = () => {
-  
-
   return (
     <MDBContainer>
       <MDBCarousel
@@ -29,7 +27,7 @@ const Slider = () => {
       >
         <div
           style={{
-            backgroundColor: "#f2f2f2",
+            backgroundColor: "#f7f7f7",
             marginTop: 24,
             padding: 20,
             flex: 1,
@@ -58,7 +56,7 @@ const Slider = () => {
                         >
                           Lizards are a widespread group of squamate reptiles,
                           with over 6,000 species, ranging across all continents
-                          except Antarctica
+                          except
                         </Typography>
                       </CardContent>
                     </CardActionArea>
