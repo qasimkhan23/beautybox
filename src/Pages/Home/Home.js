@@ -16,10 +16,29 @@ export default class extends React.Component {
     super(props);
     this.state = {
       activePage: 0,
-      upperPageBound :5,
-      lowerPageBound:5,
-      
-      
+      upperPageBound: 5,
+      lowerPageBound: 5,
+      pageBound: 5,
+      item: [
+        {
+          name: "a"
+        },
+        {
+          name: "b"
+        },
+        {
+          name: "b"
+        },
+        {
+          name: "a"
+        },
+        {
+          name: "b"
+        },
+        {
+          name: "b"
+        }
+      ]
     };
   }
   handlePageChange(pageNumber) {
@@ -28,17 +47,6 @@ export default class extends React.Component {
   }
 
   render() {
-    const item = [
-      {
-        name: "a"
-      },
-      {
-        name: "b"
-      },
-      {
-        name: "b"
-      }
-    ];
     return (
       <div>
         <Header />
@@ -125,22 +133,47 @@ export default class extends React.Component {
             }}
           >
             <Pagination.First />
-            <Pagination.Prev />
-
-            <Pagination.Ellipsis />
-            {item.map((item, index) => {
-              if (index === this.state.activePage) {
-                return (
-                  <Pagination.Item active={index - 1}>
-                    {index + 1}
-                  </Pagination.Item>
-                );
+            <Pagination.Prev
+              onClick={() =>
+                this.setState({
+                  activePage:
+                    this.state.activePage > 0
+                      ? this.state.activePage - 1
+                      : this.state.activePage
+                })
               }
-              return <Pagination.Item>{index + 1}</Pagination.Item>;
-            })}
+            />
 
             <Pagination.Ellipsis />
-            <Pagination.Next />
+            {this.state.item.map((item, index) =>
+              index < this.state.pageBound - 1 ? (
+                <div>
+                  {index === this.state.activePage ? (
+                    <Pagination.Item active={index + 1}>
+                      {index + 1}
+                    </Pagination.Item>
+                  ) : (
+                    <Pagination.Item
+                      onClick={() => this.setState({ activePage: index })}
+                    >
+                      {index + 1}
+                    </Pagination.Item>
+                  )}
+                </div>
+              ) : null
+            )}
+
+            <Pagination.Ellipsis />
+            <Pagination.Next
+              onClick={() =>
+                this.setState({
+                  activePage:
+                    this.state.activePage < this.state.item.length - 1
+                      ? this.state.activePage + 1
+                      : this.state.activePage
+                })
+              }
+            />
             <Pagination.Last />
           </Pagination>
         </MDBContainer>
