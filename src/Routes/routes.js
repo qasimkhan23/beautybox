@@ -5,6 +5,7 @@ import Gallery from "../Pages/Gallery/Gallery";
 import News from "../Pages/News/news";
 import Signin from "../Pages/Signin/Signin";
 import Signout from "../Pages/Signout/Signout";
+import Signup from "../Pages/Signup/Signup";
 class Routes extends Component {
   render() {
     return (
@@ -16,7 +17,9 @@ class Routes extends Component {
         <Route path="/signout" exact component={Signout} />
 
         <Route path="/gallery" exact component={Gallery} />
+        <Route path="/signup" exact component={Signup} />
       </Switch>
+     
     );
   }
 }

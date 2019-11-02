@@ -9,7 +9,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
-import Navbar from "../Navbar/NavBar";
+import NavBar from "../NavBar/NavBar";
 import { withRouter } from "react-router-dom";
 
 const styles = {
@@ -58,7 +58,7 @@ class TemporaryDrawer extends React.Component {
         </List>
         <Divider />
         <List>
-          {["Signin", "Signout"].map((text, index) => (
+          {["Signin", "Signup", "Signout"].map((text, index) => (
             <ListItem button key={text} onClick={() => this.handleClick(text)}>
               <ListItemIcon>
                 {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
@@ -72,7 +72,7 @@ class TemporaryDrawer extends React.Component {
 
     return (
       <div style={{ backgroundColor: "red" }}>
-        <Navbar click={this.toggleDrawer("left", true)} />
+        <NavBar click={this.toggleDrawer("left", true)} />
 
         <Drawer
           open={this.state.left}

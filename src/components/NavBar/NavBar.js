@@ -3,7 +3,7 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import "./style.css";
-const Navbar = props => {
+const NavBar = props => {
   return (
     <div>
       <AppBar position="relative">
@@ -23,4 +23,4 @@ const Navbar = props => {
     </div>
   );
 };
-export default Navbar;
+export default NavBar;
