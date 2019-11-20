@@ -1,8 +1,6 @@
 import React from "react";
 import { AppBar, Toolbar, Typography } from "@material-ui/core";
-// import AppBar from "./node_modules/@material-ui/core/AppBar";
-// import Toolbar from "./node_modules/@material-ui/core/Toolbar";
-// import Typography from "./node_modules/@material-ui/core/Typography";
+
 import "./style.css";
 const NavBar = props => {
   return (
