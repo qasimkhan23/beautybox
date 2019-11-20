@@ -7,6 +7,7 @@ import Signin from "../Pages/Signin/Signin";
 import Signout from "../Pages/Signout/Signout";
 import Profile from '../Pages/Profile/Profile'
 import Signup from "../Pages/Signup/Signup";
+import Settings from "../Pages/Settings/Settings";
 class Routes extends Component {
   render() {
     return (
@@ -21,6 +22,7 @@ class Routes extends Component {
 
         <Route path="/gallery" exact component={Gallery} />
         <Route path="/signup" exact component={Signup} />
+        <Route path="/settings" exact component={Settings} />
       </Switch>
      
     );
