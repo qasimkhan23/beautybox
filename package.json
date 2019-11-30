@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "formik": "^2.0.6",
+    "pure-react-carousel": "^1.24.1",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "yup": "^0.27.0"
