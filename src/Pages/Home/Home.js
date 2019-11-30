@@ -13,18 +13,13 @@ export default class extends React.Component {
       upperPageBound: 5,
       lowerPageBound: 5,
       pageBound: 5,
+      articles: [],
       item: [
         {
           name: "a"
         },
         {
           name: "b"
-        },
-        {
-          name: "b"
-        },
-        {
-          name: "a"
         },
         {
           name: "b"
@@ -39,7 +34,26 @@ export default class extends React.Component {
     console.log(`active page is ${pageNumber}`);
     this.setState({ activePage: pageNumber });
   }
-
+  getArticles = () => {
+    fetch(
+      `http://localhost:3000/api/articles?pageNumber=${this.state.activePage}&pageSize=6`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }
+    )
+      .then(res => res.json())
+      .then(res =>
+        this.setState({ articles: res }, () =>
+          console.log("articles", this.state.articles)
+        )
+      );
+  };
+  componentDidMount() {
+    this.getArticles();
+  }
   render() {
     return (
       <div>
@@ -47,26 +61,45 @@ export default class extends React.Component {
         <Slider />
         <MDBContainer>
           <div
-            className="row"
-            style={{ margin: 4, marginTop: 24, marginBottom: 24 }}
+            // className="row"
+            style={{
+              margin: 4,
+              marginTop: 24,
+              marginBottom: 24,
+              flex: 1,
+              flexDirection: "row",
+              flexWrap: "wrap",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center"
+            }}
           >
-            <div className="col-md-3" style={{ margin: 16 }}>
-              <CustomCard onClick={() => console.log("clickeddd")} />
-            </div>
-            <div className="col-md-3" style={{ margin: 16 }}>
-              <CustomCard />
-            </div>
+            {this.state.articles.length > 0
+              ? this.state.articles.map(item => (
+                  <div className="col-md-3" style={{ margin: 16 }}>
+                    <CustomCard
+                      ContentTitle={item.title}
+                      ContentDescription={item.body}
+                      // CardMediaHeight={120}
+                      // CardMaxWidth={200}
+                      onClick={() => console.log("clickeddd")}
+                    />
+                  </div>
+                ))
+              : null}
           </div>
 
           <Pagination
             size="lg"
             style={{
               display: "flex",
+              flex: 1,
               justifyContent: "center",
-              alignItems: "center"
+              alignItems: "center",
+              margin: 16,
+              marginBottom: 100
             }}
           >
-            <Pagination.First />
             <Pagination.Prev
               onClick={() =>
                 this.setState({
@@ -78,7 +111,6 @@ export default class extends React.Component {
               }
             />
 
-            <Pagination.Ellipsis />
             {this.state.item.map((item, index) =>
               index < this.state.pageBound - 1 ? (
                 <div>
@@ -88,7 +120,11 @@ export default class extends React.Component {
                     </Pagination.Item>
                   ) : (
                     <Pagination.Item
-                      onClick={() => this.setState({ activePage: index })}
+                      onClick={() =>
+                        this.setState({ activePage: index }, () =>
+                          this.getArticles()
+                        )
+                      }
                     >
                       {index + 1}
                     </Pagination.Item>
@@ -97,7 +133,6 @@ export default class extends React.Component {
               ) : null
             )}
 
-            <Pagination.Ellipsis />
             <Pagination.Next
               onClick={() =>
                 this.setState({
@@ -108,7 +143,6 @@ export default class extends React.Component {
                 })
               }
             />
-            <Pagination.Last />
           </Pagination>
         </MDBContainer>
       </div>

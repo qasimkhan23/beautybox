@@ -1,46 +1,54 @@
 import React from "react";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
 import Header from "../../components/Header/header";
-import Avatar from 'react-avatar-edit';
+import { MDBInput } from "mdbreact";
+import { MDBBtn } from "mdbreact";
 
-export default class extends React.Component {
-    render() {  return (
-        <div>
-          <Header />
-              </div>
-              );
-              }
-              constructor(props) {
-                super(props)
-                const src = './example/einshtein.jpg'
-                this.state = {
-                  preview: null,
-                  src
-                }
-                this.onCrop = this.onCrop.bind(this)
-                this.onClose = this.onClose.bind(this)
-              }
-              
-              onClose() {
-                this.setState({preview: null})
-              }
-              
-              onCrop(preview) {
-                this.setState({preview})
-              }
-              
-              render () {
-                return (
-                  <div>
-                    <Avatar
-                      width={390}
-                      height={295}
-                      onCrop={this.onCrop}
-                      onClose={this.onClose}
-                      src={this.state.src}
-                    />
-                    <img src={this.state.preview} alt="Preview" />
-                  </div>
-                )
-              }
-            }          
-        
+import Card from "@material-ui/core/Card";
+
+const styles = {};
+const Settings = props => {
+  // const { classes } = props;
+  return (
+    <div>
+      <Header />
+      <div className="container">
+        <Card
+          style={{
+            margin: 100,
+            padding: 32
+          }}
+        >
+          <Typography variant="h5" component="h3">
+            SignIn
+          </Typography>
+          <div className="row">
+            <div className="col-md-12">
+              <MDBInput label="Username" icon="user" />
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-12">
+              <MDBInput label="Password" icon="eye" type="password" />
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-12 col-sm-12 col-xs-12">
+              <MDBBtn color="primary" rounded size="md">
+                Submit
+              </MDBBtn>
+            </div>
+          </div>
+        </Card>
+      </div>
+    </div>
+  );
+};
+
+Settings.propTypes = {
+  classes: PropTypes.object.isRequired
+};
+
+export default withStyles(styles)(Settings);

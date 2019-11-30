@@ -23,7 +23,7 @@ export const CustomCard = props => {
           title={props.title}
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
+          <Typography gutterBottom variant="h5" component="h2" noWrap>
             {props.ContentTitle}
           </Typography>
           <Typography

@@ -13,169 +13,168 @@ import {
 } from "mdbreact";
 import React from "react";
 
-const Slider = () => {
-  return (
-    <MDBContainer>
-      <MDBCarousel
-        activeItem={1}
-        length={1}
-        slide={true}
-        showControls={false}
-        showIndicators={true}
-        multiItem
-        style={{ height: "100%" }}
-      >
-        <div
-          style={{
-            backgroundColor: "#f7f7f7",
-            marginTop: 24,
-            padding: 20,
-            flex: 1,
-            minHeight: 500
-          }}
+class Slider extends React.Component {
+  render() {
+    return (
+      <MDBContainer>
+        <MDBCarousel
+          activeItem={3}
+          length={3}
+          slide={true}
+          showControls={false}
+          showIndicators={true}
+          multiItem
+          style={{ height: "100%" }}
         >
-          <MDBCarouselInner>
-            <MDBCarouselItem itemId="1">
-              <div className="row">
-                <div className="col-md-3">
-                  <Card raised={true} style={{ maxWidth: 275 }}>
-                    <CardActionArea>
-                      <CardMedia
-                        style={{ height: 180 }}
-                        image="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(34).jpg"
-                        title="Contemplative Reptile"
-                      />
-                      <CardContent style={{ height: 150 }}>
-                        <Typography gutterBottom variant="h5" component="h2">
-                          Lizard
-                        </Typography>
-                        <Typography
-                          variant="body2"
-                          color="textSecondary"
-                          component="p"
-                        >
-                          Lizards are a widespread group of squamate reptiles,
-                          with over 6,000 species, ranging across all continents
-                          except
-                        </Typography>
-                      </CardContent>
-                    </CardActionArea>
-                    <CardActions>
-                      <Button size="small" color="primary">
-                        Share
-                      </Button>
-                      <Button size="small" color="primary">
-                        Learn More
-                      </Button>
-                    </CardActions>
-                  </Card>
+          <div
+            style={{
+              backgroundColor: "#f7f7f7",
+              marginTop: 24,
+              padding: 20,
+              flex: 1,
+              minHeight: 500
+            }}
+          >
+            <MDBCarouselInner>
+              <MDBCarouselItem itemId="1">
+                <div className="row">
+                  <div className="col-md-3">
+                    <Card raised={true} style={{ maxWidth: 275 }}>
+                      <CardActionArea>
+                        <CardMedia
+                          style={{ height: 180 }}
+                          image="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(34).jpg"
+                          title="Contemplative Reptile"
+                        />
+                        <CardContent style={{ height: 150 }}>
+                          <Typography gutterBottom variant="h5" component="h2">
+                            Lizard
+                          </Typography>
+                          <Typography
+                            variant="body2"
+                            color="textSecondary"
+                            component="p"
+                          >
+                            Lizards are a widespread group of squamate reptiles,
+                            with over 6,000 species, ranging across all
+                            continents except
+                          </Typography>
+                        </CardContent>
+                      </CardActionArea>
+                      <CardActions>
+                        <Button size="small" color="primary">
+                          Learn More
+                        </Button>
+                      </CardActions>
+                    </Card>
+                  </div>
+                  <div className="col-md-3">
+                    <Card style={{ maxWidth: 275 }}>
+                      <CardActionArea>
+                        <CardMedia
+                          style={{ height: 180 }}
+                          image="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(34).jpg"
+                          title="Contemplative Reptile"
+                        />
+                        <CardContent style={{ height: 150 }}>
+                          <Typography gutterBottom variant="h5" component="h2">
+                            Lizard
+                          </Typography>
+                          <Typography
+                            variant="body2"
+                            color="textSecondary"
+                            component="p"
+                          >
+                            Lizards are a widespread group of squamate reptiles,
+                            with over 6,000 species, ranging across all
+                            continents except Antarctica
+                          </Typography>
+                        </CardContent>
+                      </CardActionArea>
+                      <CardActions>
+                        <Button size="small" color="primary">
+                          Share
+                        </Button>
+                        <Button size="small" color="primary">
+                          Learn More
+                        </Button>
+                      </CardActions>
+                    </Card>
+                  </div>
+                  <div className="col-md-3">
+                    <Card style={{ maxWidth: 275 }}>
+                      <CardActionArea>
+                        <CardMedia
+                          style={{ height: 180 }}
+                          image="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(34).jpg"
+                          title="Contemplative Reptile"
+                        />
+                        <CardContent style={{ height: 150 }}>
+                          <Typography gutterBottom variant="h5" component="h2">
+                            Lizard
+                          </Typography>
+                          <Typography
+                            variant="body2"
+                            color="textSecondary"
+                            component="p"
+                          >
+                            Lizards are a widespread group of squamate reptiles,
+                            with over 6,000 species, ranging across all
+                            continents except Antarctica
+                          </Typography>
+                        </CardContent>
+                      </CardActionArea>
+                      <CardActions>
+                        <Button size="small" color="primary">
+                          Share
+                        </Button>
+                        <Button size="small" color="primary">
+                          Learn More
+                        </Button>
+                      </CardActions>
+                    </Card>
+                  </div>
+                  <div className="col-md-3">
+                    <Card style={{ maxWidth: 275 }}>
+                      <CardActionArea>
+                        <CardMedia
+                          style={{ height: 180 }}
+                          image="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(34).jpg"
+                          title="Contemplative Reptile"
+                        />
+                        <CardContent style={{ height: 150 }}>
+                          <Typography gutterBottom variant="h5" component="h2">
+                            Lizard
+                          </Typography>
+                          <Typography
+                            variant="body2"
+                            color="textSecondary"
+                            component="p"
+                          >
+                            Lizards are a widespread group of squamate reptiles,
+                            with over 6,000 species, ranging across all
+                            continents except Antarctica
+                          </Typography>
+                        </CardContent>
+                      </CardActionArea>
+                      <CardActions>
+                        <Button size="small" color="primary">
+                          Share
+                        </Button>
+                        <Button size="small" color="primary">
+                          Learn More
+                        </Button>
+                      </CardActions>
+                    </Card>
+                  </div>
                 </div>
-                <div className="col-md-3">
-                  <Card style={{ maxWidth: 275 }}>
-                    <CardActionArea>
-                      <CardMedia
-                        style={{ height: 180 }}
-                        image="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(34).jpg"
-                        title="Contemplative Reptile"
-                      />
-                      <CardContent style={{ height: 150 }}>
-                        <Typography gutterBottom variant="h5" component="h2">
-                          Lizard
-                        </Typography>
-                        <Typography
-                          variant="body2"
-                          color="textSecondary"
-                          component="p"
-                        >
-                          Lizards are a widespread group of squamate reptiles,
-                          with over 6,000 species, ranging across all continents
-                          except Antarctica
-                        </Typography>
-                      </CardContent>
-                    </CardActionArea>
-                    <CardActions>
-                      <Button size="small" color="primary">
-                        Share
-                      </Button>
-                      <Button size="small" color="primary">
-                        Learn More
-                      </Button>
-                    </CardActions>
-                  </Card>
-                </div>
-                <div className="col-md-3">
-                  <Card style={{ maxWidth: 275 }}>
-                    <CardActionArea>
-                      <CardMedia
-                        style={{ height: 180 }}
-                        image="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(34).jpg"
-                        title="Contemplative Reptile"
-                      />
-                      <CardContent style={{ height: 150 }}>
-                        <Typography gutterBottom variant="h5" component="h2">
-                          Lizard
-                        </Typography>
-                        <Typography
-                          variant="body2"
-                          color="textSecondary"
-                          component="p"
-                        >
-                          Lizards are a widespread group of squamate reptiles,
-                          with over 6,000 species, ranging across all continents
-                          except Antarctica
-                        </Typography>
-                      </CardContent>
-                    </CardActionArea>
-                    <CardActions>
-                      <Button size="small" color="primary">
-                        Share
-                      </Button>
-                      <Button size="small" color="primary">
-                        Learn More
-                      </Button>
-                    </CardActions>
-                  </Card>
-                </div>
-                <div className="col-md-3">
-                  <Card style={{ maxWidth: 275 }}>
-                    <CardActionArea>
-                      <CardMedia
-                        style={{ height: 180 }}
-                        image="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(34).jpg"
-                        title="Contemplative Reptile"
-                      />
-                      <CardContent style={{ height: 150 }}>
-                        <Typography gutterBottom variant="h5" component="h2">
-                          Lizard
-                        </Typography>
-                        <Typography
-                          variant="body2"
-                          color="textSecondary"
-                          component="p"
-                        >
-                          Lizards are a widespread group of squamate reptiles,
-                          with over 6,000 species, ranging across all continents
-                          except Antarctica
-                        </Typography>
-                      </CardContent>
-                    </CardActionArea>
-                    <CardActions>
-                      <Button size="small" color="primary">
-                        Share
-                      </Button>
-                      <Button size="small" color="primary">
-                        Learn More
-                      </Button>
-                    </CardActions>
-                  </Card>
-                </div>
-              </div>
-            </MDBCarouselItem>
-          </MDBCarouselInner>
-        </div>
-      </MDBCarousel>
-    </MDBContainer>
-  );
-};
+              </MDBCarouselItem>
+            </MDBCarouselInner>
+          </div>
+        </MDBCarousel>
+      </MDBContainer>
+    );
+  }
+}
 
 export default Slider;
