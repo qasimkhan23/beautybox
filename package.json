@@ -4,14 +4,13 @@
   "private": true,
   "dependencies": {
     "formik": "^2.0.6",
-    "pure-react-carousel": "^1.24.1",
+    "local-storage": "^2.0.0",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
+    "react-responsive-carousel": "^3.1.51",
     "yup": "^0.27.0"
   },
   "devDependencies": {
-    "react-simple-sidenav": "^1.0.1",
-    "react-slick": "^0.23.2",
     "@material-ui/core": "4.5.2",
     "@material-ui/icons": "^3.0.2",
     "bootstrap": "^4.3.1",
@@ -19,11 +18,13 @@
     "draftjs-to-html": "^0.8.4",
     "html-to-draftjs": "^1.4.0",
     "mdbreact": "^4.9.0",
+    "react-bootstrap": "^1.0.0-beta.14",
     "react-draft-wysiwyg": "^1.13.2",
     "react-fontawesome": "^1.6.1",
     "react-router-dom": "^4.3.1",
     "react-scripts": "^3.2.0",
-    "react-bootstrap": "^1.0.0-beta.14"
+    "react-simple-sidenav": "^1.0.1",
+    "react-slick": "^0.23.2"
   },
   "scripts": {
     "start": "react-scripts start",

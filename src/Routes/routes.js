@@ -8,12 +8,43 @@ import Signout from "../Pages/Signout/Signout";
 import Profile from '../Pages/Profile/Profile'
 import Signup from "../Pages/Signup/Signup";
 import Settings from "../Pages/Settings/Settings";
+import {
+  
+  Redirect,
+  useHistory,
+  useLocation
+} from "react-router-dom";
+import ls from 'local-storage';
+
+const PrivateRoute = ({ children, ...rest }) =>{
+  return (
+    <Route
+      {...rest}
+      render={({ location }) =>
+        ls.get('token') !==null ? (
+          children
+        ) : (
+          <Redirect
+            to={{
+              pathname: "/signin",
+              state: { from: location }
+            }}
+          />
+        )
+      }
+    />
+  );
+}
 class Routes extends Component {
+ 
   render() {
     return (
       <Switch>
         <Route path="/" exact component={Home} />
-        <Route path="/profile" exact component={Profile} />
+        {/* <Route path="/profile" exact component={Profile} /> */}
+        <PrivateRoute path="/profile">
+          <Profile/>
+        </PrivateRoute>
 
         <Route path="/news" exact component={News} />
         <Route path="/signin" exact component={Signin} />

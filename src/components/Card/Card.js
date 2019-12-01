@@ -37,10 +37,10 @@ export const CustomCard = props => {
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button size="small" color="primary">
+        <Button size="small" color="primary" onClick={props.onClickButton1}>
           {props.ButtonTitle1}
         </Button>
-        <Button size="small" color="primary">
+        <Button size="small" color="primary" onClick={props.onClickButton2}>
           {props.ButtonTitle2}
         </Button>
       </CardActions>

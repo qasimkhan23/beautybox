@@ -1,16 +1,66 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import Header from "../../components/Header/header";
-import { MDBInput } from "mdbreact";
-import { MDBBtn } from "mdbreact";
-
 import Card from "@material-ui/core/Card";
+import Typography from "@material-ui/core/Typography";
+import { MDBBtn, MDBInput } from "mdbreact";
+import React from "react";
+import { withRouter } from "react-router-dom";
+import Header from "../../components/Header/header";
+import ls from 'local-storage'
 
-const styles = {};
-const Signin = props => {
-  // const { classes } = props;
+
+class Signin extends React.Component {
+  constructor(props){
+    super(props)
+    this.state={
+      email:'',
+      password:''
+    }
+  }
+  handleEmail = (e)=>{
+    this.setState({
+      email:e.target.value
+    })
+  }
+  handlePassword = (e)=>{
+    this.setState({
+      password:e.target.value
+    })
+  }
+  handleSubmit = ()=>{
+    if(this.state.email !== '' && this.state.password !==''){
+      console.log('eeee',this.state.email,this.state.password)
+      fetch(
+        `http://localhost:3000/api/auth/`,
+        {
+          method: "POST",
+          body:JSON.stringify({
+            email:"aruba@gmail.com",
+            password:"12345678"
+          }),
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+      )
+      .then((res)=>res.text())
+        .then(res =>{
+          ls.set('token',res)
+          let {history}= this.props;
+          history.push({
+            pathname: `/`
+  
+          })
+        }
+        )
+        .catch(err=>{
+          console.log('errorrrrre',err)
+
+        })
+    }
+    else{
+      alert('Please fill the form')
+    }
+  }
+  render(){
   return (
     <div>
       <Header />
@@ -26,17 +76,17 @@ const Signin = props => {
           </Typography>
           <div className="row">
             <div className="col-md-12">
-              <MDBInput label="Username" icon="user" />
+              <MDBInput label="Username" icon="user" onChange={(e)=>this.handleEmail(e)}  value={this.state.email} validate={true}/>
             </div>
           </div>
           <div className="row">
             <div className="col-md-12">
-              <MDBInput label="Password" icon="eye" type="password" />
+              <MDBInput label="Password" icon="eye" type="password" onChange={(e)=>this.handlePassword(e)}  value={this.state.password} />
             </div>
           </div>
           <div className="row">
             <div className="col-md-12 col-sm-12 col-xs-12">
-              <MDBBtn color="primary" rounded size="md">
+              <MDBBtn color="primary" rounded size="md" onClick={this.handleSubmit}>
                 Submit
               </MDBBtn>
             </div>
@@ -45,10 +95,9 @@ const Signin = props => {
       </div>
     </div>
   );
+        }
 };
 
-Signin.propTypes = {
-  classes: PropTypes.object.isRequired
-};
 
-export default withStyles(styles)(Signin);
+
+export default withRouter(Signin);

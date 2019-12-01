@@ -65,12 +65,18 @@ router.post("/", Auth, async (req, res) => {
 
 router.put("/:id", Auth, async (req, res) => {
   const { error } = Validate(req.body);
+  console.log('reqqqqq',req.body)
   if (error) return res.status(400).send(error.details[0].message);
   const article = await Article.findByIdAndUpdate(
     req.params.id,
     {
-      name: req.body.name,
-      author: req.body.author,
+      title: req.body.title,
+      body:req.body.body,
+        author: {
+          _id: req.user._id,
+          email: req.user.email,
+          name: req.user.name
+        },
       tags: req.body.tags,
       isPublished: req.body.isPublished
     },

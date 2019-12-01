@@ -8,10 +8,14 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
-
-import MailIcon from "@material-ui/icons/Mail";
+import HomeIcon from '@material-ui/icons/Home';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import PersonIcon from '@material-ui/icons/Person';
 import NavBar from '../Navbar/NavBar'
 import { withRouter } from "react-router-dom";
+import LockOpenIcon from '@material-ui/icons/LockOpen';
+import ls from 'local-storage'
 
 const styles = {
   list: {
@@ -36,6 +40,10 @@ class TemporaryDrawer extends React.Component {
     if (page === "home") {
       page = "";
     }
+    if(page ==="signout"){
+      ls.clear()
+      page=""
+    }
     history.push({
       pathname: `/${page}`
     });
@@ -47,27 +55,60 @@ class TemporaryDrawer extends React.Component {
 
     const sideList = (
       <div className={classes.list} style={{ backgroundColor: "#f2f2f2" }}>
-        <List>
-          {["Home", "Profile","News", "Gallery", "Settings"].map((text, index) => (
-            <ListItem button key={text} onClick={() => this.handleClick(text)}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
+        {console.log('=====================',ls.get('token'))}
+        {ls.get('token') !== null ?
+          <List>
+            {["Home", "Profile"].map((text, index) => (
+              <ListItem button key={text} onClick={() => this.handleClick(text)}>
+                <ListItemIcon>
+                  {index % 2 === 0 ? <HomeIcon /> : <PersonIcon />}
+                </ListItemIcon>
+                <ListItemText primary={text} />
+              </ListItem>
+            ))}
+          </List>
+          : <List>
+            {["Home"].map((text, index) => (
+              <ListItem button key={text} onClick={() => this.handleClick(text)}>
+                <ListItemIcon>
+                  <HomeIcon />
+                </ListItemIcon>
+                <ListItemText primary={text} />
+              </ListItem>
+            ))}
+          </List>
+        }
         <Divider />
+        {ls.get('token') !== null ?
         <List>
           {["Signin", "Signup", "Signout"].map((text, index) => (
             <ListItem button key={text} onClick={() => this.handleClick(text)}>
               <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                {index === 0 ? <LockOpenIcon /> : null}
+                {index === 1 ? <PersonAddIcon /> : null}
+
+                {index === 2 ? <ExitToAppIcon /> : null}
+
               </ListItemIcon>
               <ListItemText primary={text} />
             </ListItem>
           ))}
         </List>
+        :
+        <List>
+        {["Signin", "Signup"].map((text, index) => (
+          <ListItem button key={text} onClick={() => this.handleClick(text)}>
+            <ListItemIcon>
+              {index === 0 ? <LockOpenIcon /> : null}
+              {index === 1 ? <PersonAddIcon /> : null}
+
+
+            </ListItemIcon>
+            <ListItemText primary={text} />
+          </ListItem>
+        ))}
+      </List>
+  }
       </div>
     );
 

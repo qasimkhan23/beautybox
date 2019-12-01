@@ -1,17 +1,55 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
+import { Button, Card, TextField } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
-import Header from "../../components/Header/header";
-import { MDBContainer, MDBRow, MDBCol } from "mdbreact";
-
-import { Formik, ErrorMessage } from "formik";
+import { ErrorMessage, Formik } from "formik";
+import { MDBCol, MDBContainer, MDBRow } from "mdbreact";
+import React from "react";
+import { withRouter } from "react-router-dom";
 import * as Yup from "yup";
-import { Card, TextField, Button } from "@material-ui/core";
+import Header from "../../components/Header/header";
 
-const styles = {};
-const Signup = props => {
-  // const { classes } = props;
+
+const equalTo = (ref,msg)=>{
+  return Yup.mixed().test({
+    name: 'equalTo',
+    exclusive: false,
+    message: msg || '${path} must be the same as ${reference}',
+    params: {
+      reference: ref.path,
+    },
+    test: function(value) {
+      return value === this.resolve(ref);
+    },
+  });
+}
+Yup.addMethod(Yup.string, 'equalTo', equalTo);
+
+class Signup extends React.Component {
+  handleSubmit = (values)=>{
+    fetch(
+      `http://localhost:3000/api/users`,
+      {
+        method: "POST",
+        body:JSON.stringify({
+          name:values.name,
+          email:values.email,
+          password:values.password
+        }),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }
+    )
+      .then(res => res.json())
+      .then(res =>{
+        let {history}= this.props;
+        history.push({
+          pathname: `/signin`
+
+        })
+      }
+      );
+  }
+  render(){
   return (
     <div>
       <Header />
@@ -27,33 +65,7 @@ const Signup = props => {
             SignUp
           </Typography>
 
-          {/* <div className="row">
-            <div className="col-md-12">
-              <MDBInput label="Full Name" icon="user" />
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-md-12">
-              <MDBInput label="Email" icon="mail" />
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-md-12">
-              <MDBInput label="Create Password" icon="eye" type="password" />
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-md-12">
-              <MDBInput label="Confirm Password" icon="eye" type="password" />
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-md-12 col-sm-12 col-xs-12">
-              <MDBBtn color="primary" rounded size="md">
-                Submit
-              </MDBBtn>
-            </div>
-          </div> */}
+       
           <Formik
             initialValues={{
               name: "",
@@ -68,10 +80,10 @@ const Signup = props => {
                 .max(30, "Must be 30 letters or less")
                 .required("Required"),
               password: Yup.string()
-                .min(4)
+                .min(5)
                 .max(30)
                 .required("Required"),
-              confirm: Yup.string().required("Required"),
+              confirm: Yup.string().equalTo(Yup.ref('password'), 'Passwords must match').required('Required'),
 
               email: Yup.string()
                 .min(3)
@@ -80,8 +92,7 @@ const Signup = props => {
                 .required("Required")
             })}
             onSubmit={(values, { setSubmitting, resetForm }) => {
-              console.log("vaavavavava", values);
-              // Add(values, resetForm, setSubmitting);
+              this.handleSubmit(values);
             }}
           >
             {formik => (
@@ -144,6 +155,7 @@ const Signup = props => {
                             label="Password"
                             style={{ width: 700 }}
                             margin="normal"
+                            type="Password"
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             value={formik.values.password}
@@ -169,6 +181,8 @@ const Signup = props => {
                             label="Confirm Password"
                             style={{ width: 700 }}
                             margin="normal"
+                            type="Password"
+
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             value={formik.values.confirm}
@@ -208,11 +222,9 @@ const Signup = props => {
         </Card>
       </div>
     </div>
-  );
+  )}
 };
 
-Signup.propTypes = {
-  classes: PropTypes.object.isRequired
-};
 
-export default withStyles(styles)(Signup);
+
+export default withRouter(Signup);

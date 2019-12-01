@@ -5,8 +5,8 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
-import { CarouselProvider, Slider, Slide, ButtonBack, ButtonNext } from 'pure-react-carousel';
-import 'pure-react-carousel/dist/react-carousel.es.css';
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { Carousel } from 'react-responsive-carousel';
 import {
   MDBCarousel,
   MDBCarouselInner,
@@ -45,125 +45,43 @@ class SliderComponent extends React.Component {
   render() {
     return (
       <MDBContainer>
-        <CarouselProvider
-          naturalSlideWidth={100}
-          naturalSlideHeight={125}
-          totalSlides={this.state.articles.length - 1}
-        >
+        
            <div
             style={{
               backgroundColor: "#f7f7f7",
               marginTop: 24,
-              padding: 20,
+              // padding: 20,
               flex: 1,
-              minHeight: 500
+              
+              
+              // minHeight: 500
             }}
           >
-          <Slider>
-            {
-              this.state.articles.map((item, index) => (
-                <Slide index={index}>
-                  <div className="row">
-                  <div className="col-md-3">
-                    <Card raised={true} style={{ maxWidth: 275 }}>
-                      <CardActionArea>
-                        <CardMedia
-                          style={{ height: 180 }}
-                          image="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(34).jpg"
-                          title="Contemplative Reptile"
-                        />
-                        <CardContent style={{ height: 150 }}>
-                          <Typography gutterBottom variant="h5" component="h2">
-                            Lizard
-                          </Typography>
-                          <Typography
-                            variant="body2"
-                            color="textSecondary"
-                            component="p"
-                          >
-                            Lizards are a widespread group of squamate reptiles,
-                            with over 6,000 species, ranging across all
-                            continents except
-                          </Typography>
-                        </CardContent>
-                      </CardActionArea>
-                      <CardActions>
-                        <Button size="small" color="primary">
-                          Learn More
-                        </Button>
-                      </CardActions>
-                    </Card>
-                  </div>
-                 
+              <Carousel autoPlay={true} dynamicHeight={true} infiniteLoop={true} interval={2000} thumbWidth={500}>
+                <div >
+                <img src={require('../../images/4.jpg')}/>
                 </div>
-                </Slide>
-                
-              ))
-            }
-
-
-          </Slider>
-          </div>
-          <ButtonBack>Back</ButtonBack>
-          <ButtonNext>Next</ButtonNext>
-        </CarouselProvider>
-        {/* <MDBCarousel
-          activeItem={3}
-          length={3}
-          slide={true}
-          showControls={false}
-          showIndicators={true}
-          multiItem
-          style={{ height: "100%" }}
-        >
-          <div
-            style={{
-              backgroundColor: "#f7f7f7",
-              marginTop: 24,
-              padding: 20,
-              flex: 1,
-              minHeight: 500
-            }}
-          >
-            <MDBCarouselInner>
-              <MDBCarouselItem itemId="1">
-                <div className="row">
-                  <div className="col-md-3">
-                    <Card raised={true} style={{ maxWidth: 275 }}>
-                      <CardActionArea>
-                        <CardMedia
-                          style={{ height: 180 }}
-                          image="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(34).jpg"
-                          title="Contemplative Reptile"
-                        />
-                        <CardContent style={{ height: 150 }}>
-                          <Typography gutterBottom variant="h5" component="h2">
-                            Lizard
-                          </Typography>
-                          <Typography
-                            variant="body2"
-                            color="textSecondary"
-                            component="p"
-                          >
-                            Lizards are a widespread group of squamate reptiles,
-                            with over 6,000 species, ranging across all
-                            continents except
-                          </Typography>
-                        </CardContent>
-                      </CardActionArea>
-                      <CardActions>
-                        <Button size="small" color="primary">
-                          Learn More
-                        </Button>
-                      </CardActions>
-                    </Card>
-                  </div>
-                 
+                <div>
+                    <img src={require('../../images/2.jpg')} />
                 </div>
-              </MDBCarouselItem>
-            </MDBCarouselInner>
+                <div>
+                <img src={require('../../images/3.jpg')} />
+                </div>
+                <div>
+                <img src={require('../../images/4.jpg')} />
+                </div>
+                <div>
+                <img src={require('../../images/5.jpg')} />
+                </div>
+                <div>
+                <img src={require('../../images/6.jpg')} />
+                </div>
+            </Carousel>  
+      
+  
           </div>
-        </MDBCarousel> */}
+         
+      
       </MDBContainer>
     );
   }
