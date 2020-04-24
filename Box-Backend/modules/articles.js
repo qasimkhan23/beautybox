@@ -4,11 +4,11 @@ const Joi = require("joi");
 const articleSchema = new mongoose.Schema({
   title: {
     type: String,
-    required: true
+    // required: true,
   },
   body: {
     type: String,
-    required: true
+    // required: true,
   },
   author: {
     type: new mongoose.Schema({
@@ -17,19 +17,43 @@ const articleSchema = new mongoose.Schema({
         type: String,
         minlength: 3,
         maxlength: 255,
-        required: true
+        required: true,
       },
       email: {
         type: String,
         minlength: 3,
         maxlength: 255,
-        required: true
-      }
+        required: true,
+      },
     }),
-    required: true
+    required: true,
+  },
+  comments: {
+    type: [
+      new mongoose.Schema({
+        authorid: mongoose.Schema.Types.ObjectId,
+        authorname: {
+          type: String,
+          minlength: 3,
+          maxlength: 255,
+          required: true,
+        },
+        authoremail: {
+          type: String,
+          minlength: 3,
+          maxlength: 255,
+          required: true,
+        },
+        comment: {
+          type: String,
+
+          required: true,
+        },
+      }),
+    ],
   },
   tags: {
-    type: Array
+    type: Array,
     // validate: {
     //   validator: function(v) {
     //     return v && v.length > 0;
@@ -41,24 +65,20 @@ const articleSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now },
   isPublished: {
     type: Boolean,
-    required: false
-  }
+    // required: false,
+  },
 });
 const Article = mongoose.model("Article", articleSchema);
 
-const ValidateArticles = article => {
+const ValidateArticles = (article) => {
   const schema = {
-    title: Joi.string()
-      .min(3)
-      .required(),
-    body: Joi.string()
-      .min(3)
-      .required(),
+    title: Joi.string().min(3).required(),
+    body: Joi.string().min(3).required(),
     // author: Joi.string()
     //     .min(3)
     //     .required(),
     tags: Joi.array(),
-    isPublished: Joi.bool().required()
+    isPublished: Joi.bool().required(),
   };
   return Joi.validate(article, schema);
 };

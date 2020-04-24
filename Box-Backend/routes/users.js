@@ -5,10 +5,38 @@ const { Auth } = require("../middlewares/auth");
 const router = express.Router();
 const { User, Validate } = require("../modules/users");
 const _ = require("lodash");
+const multer = require("multer");
+// const upload = multer({ dest: __dirname + "/uploads" });
+
+var path = require("path");
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "../uploads");
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname)); //Appending extension
+  },
+});
+var upload = multer({ storage: storage });
 
 router.get("/me", Auth, async (req, res) => {
   const user = await User.findById(req.user._id).select("-password");
   res.send(user);
+});
+
+router.post("/profileimage", upload.single("avatar"), function (req, res) {
+  if (req.file) {
+    res.json(req.file);
+  } else throw "error";
+});
+
+router.post("/articleimages", upload.array("photos", 12), function (req, res) {
+  // req.files is array of `photos` files
+  // req.body will contain the text fields, if there were any
+  if (req.files) {
+    res.json(req.files);
+  } else throw "error";
 });
 
 router.post("/", async (req, res) => {
