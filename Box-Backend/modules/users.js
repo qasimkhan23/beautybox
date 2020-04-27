@@ -7,21 +7,21 @@ const userSchema = new mongoose.Schema({
     type: String,
     minlength: 3,
     maxlength: 255,
-    required: true
+    required: true,
   },
   email: {
     type: String,
     minlength: 3,
     maxlength: 255,
     unique: true,
-    required: true
+    required: true,
   },
   password: {
     type: String,
     minlength: 5,
     maxlength: 1024,
-    required: true
-  }
+    required: true,
+  },
 });
 userSchema.methods.generateAuthToken = function() {
   const token = jwt.sign(
@@ -30,9 +30,12 @@ userSchema.methods.generateAuthToken = function() {
   );
   return token;
 };
+userSchema.methods.getUserId = function() {
+  return this._id;
+};
 const User = mongoose.model("User", userSchema);
 
-const ValidateUser = user => {
+const ValidateUser = (user) => {
   const schema = {
     name: Joi.string()
       .min(3)
@@ -46,7 +49,7 @@ const ValidateUser = user => {
     password: Joi.string()
       .min(5)
       .max(1024)
-      .required()
+      .required(),
   };
   return Joi.validate(user, schema);
 };

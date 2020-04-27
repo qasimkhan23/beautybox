@@ -19,9 +19,14 @@ router.post("/", async (req, res) => {
     return res.status(400).send("Invalid username or password");
 
   const token = user.generateAuthToken();
-  res.send(token);
+  const id = user.getUserId();
+  const obj = {
+    token: token,
+    id: id,
+  };
+  res.send(obj);
 });
-const Validate = req => {
+const Validate = (req) => {
   const schema = {
     email: Joi.string()
       .min(3)
@@ -31,7 +36,7 @@ const Validate = req => {
     password: Joi.string()
       .min(5)
       .max(1024)
-      .required()
+      .required(),
   };
   return Joi.validate(req, schema);
 };
