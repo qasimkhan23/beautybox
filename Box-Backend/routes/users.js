@@ -11,10 +11,10 @@ const multer = require("multer");
 var path = require("path");
 
 var storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "../uploads");
+  destination: function(req, file, cb) {
+    cb(null, "../src/uploads");
   },
-  filename: function (req, file, cb) {
+  filename: function(req, file, cb) {
     cb(null, Date.now() + path.extname(file.originalname)); //Appending extension
   },
 });
@@ -25,13 +25,14 @@ router.get("/me", Auth, async (req, res) => {
   res.send(user);
 });
 
-router.post("/profileimage", upload.single("avatar"), function (req, res) {
+router.post("/profileimage", upload.single("avatar"), function(req, res) {
+  console.log("==========fileee backenddd", req.file);
   if (req.file) {
     res.json(req.file);
   } else throw "error";
 });
 
-router.post("/articleimages", upload.array("photos", 12), function (req, res) {
+router.post("/articleimages", upload.array("photos", 12), function(req, res) {
   // req.files is array of `photos` files
   // req.body will contain the text fields, if there were any
   if (req.files) {

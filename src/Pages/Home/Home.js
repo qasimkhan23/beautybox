@@ -39,9 +39,11 @@ export default class extends React.Component {
       editComment: "",
       articleId: "",
       articleComments: [],
+      article: null,
       activePage: 0,
       upperPageBound: 5,
       lowerPageBound: 5,
+      totalPages: null,
       pageBound: 5,
       articles: [],
       item: [
@@ -75,11 +77,13 @@ export default class extends React.Component {
       }
     )
       .then((res) => res.json())
-      .then((res) =>
-        this.setState({ articles: res }, () =>
-          console.log("articles", this.state.articles)
-        )
-      );
+      .then((res) => {
+        let temp = [];
+        for (let i = 0; i < res.totalCount; i++) {
+          temp.push({});
+        }
+        this.setState({ articles: res.articles, item: temp });
+      });
   };
   componentDidMount() {
     this.getArticles();
@@ -91,6 +95,7 @@ export default class extends React.Component {
       openRead: !this.state.openRead,
       articleComments: article.comments,
       articleId: article._id,
+      article: article,
     });
   };
   closeReadModal = () => {
@@ -278,7 +283,22 @@ export default class extends React.Component {
                             />
                           </ListItemAvatar>
                           <ListItemText
-                            primary={item.authorname}
+                            primary={
+                              <div style={{ flexDirention: "row" }}>
+                                {item.authorname + " "}
+                                {this.state.article.author._id ==
+                                item.authorid ? (
+                                  <Typography
+                                    component="span"
+                                    variant="caption"
+                                    style={{ display: "inline" }}
+                                    color="textPrimary"
+                                  >
+                                    (Author)
+                                  </Typography>
+                                ) : null}
+                              </div>
+                            }
                             secondary={
                               <React.Fragment>
                                 <Typography

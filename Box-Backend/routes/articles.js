@@ -8,8 +8,10 @@ router.get("/", async (req, res) => {
   const result = await Article.find({ isPublished: true })
     .skip((req.query.pageSize - 1) * req.query.pageNumber)
     .limit(parseInt(req.query.pageSize));
-
-  res.send(result);
+  let totalCount = await Article.countDocuments();
+  totalCount = totalCount / 6;
+  totalCount = Math.ceil(totalCount);
+  res.send({ articles: result, totalCount });
 });
 router.get("/:id", async (req, res) => {
   const result = await Article.findById(req.params.id);

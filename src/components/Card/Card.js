@@ -6,15 +6,16 @@ import {
   CardContent,
   CardMedia,
   Button,
-  Typography
+  Typography,
 } from "@material-ui/core";
 
-export const CustomCard = props => {
+export const CustomCard = (props) => {
   return (
     <Card
       raised={true}
       style={{ maxWidth: props.CardMaxWidth }}
       onClick={props.onClick}
+      style={props.style}
     >
       <CardActionArea>
         <CardMedia
@@ -57,5 +58,5 @@ CustomCard.defaultProps = {
   ButtonTitle1: "Share",
   ButtonTitle2: "Learn More",
   CardMaxWidth: 275,
-  CardMediaHeight: 180
+  CardMediaHeight: 180,
 };

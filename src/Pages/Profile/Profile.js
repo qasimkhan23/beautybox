@@ -38,6 +38,7 @@ export default class Profile extends React.Component {
       readBody: "",
       openRead: false,
       user: "",
+      file: null,
     };
   }
 
@@ -220,7 +221,30 @@ export default class Profile extends React.Component {
       openRead: false,
     });
   };
+  uploadImage = () => {
+    let form = new FormData();
 
+    form.append("avatar", this.state.file);
+
+    fetch(`http://localhost:3000/api/users/profileimage`, {
+      method: "POST",
+
+      body: form,
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log("profile upload", res);
+        // this.handleModal();
+        // this.getMyArticles();
+      })
+      .catch((err) => {
+        console.log("errorrrrre", err);
+      });
+  };
+
+  onChange = (e) => {
+    this.setState({ file: e.target.files[0] }, () => this.uploadImage());
+  };
   render() {
     const {
       editorState,
@@ -257,9 +281,9 @@ export default class Profile extends React.Component {
                   // border: "2px solid #000",
                   // boxShadow: the,
                   height: 600,
-                  width: 800,
+                  width: 1200,
                   padding: 64,
-                  overflow: "scroll",
+                  overflowY: "scroll",
                 }}
               >
                 <h4>{this.state.readTitle}</h4>
@@ -305,6 +329,7 @@ export default class Profile extends React.Component {
                   // height: 600,
                   // width: 800,
                   padding: 16,
+                  overflowY: "scroll",
                 }}
               >
                 Are you sure you want to delete this Article?
@@ -351,8 +376,9 @@ export default class Profile extends React.Component {
                   // border: "2px solid #000",
                   // boxShadow: the,
                   height: 600,
-                  width: 800,
-                  padding: 16,
+                  width: 1200,
+                  padding: 64,
+                  overflowY: "scroll",
                 }}
               >
                 <h2 id="transition-modal-title">
@@ -444,11 +470,24 @@ export default class Profile extends React.Component {
                       <AddCircle fontSize="large" />
                     </Tooltip>
                   </Button>
-                  {/* <Button>
+
+                  <input
+                    id="myInput"
+                    type="file"
+                    ref={(ref) => (this.upload = ref)}
+                    style={{ display: "none" }}
+                    onChange={this.onChange}
+                  />
+
+                  <Button
+                    onClick={() => {
+                      this.upload.click();
+                    }}
+                  >
                     <Tooltip title="Settings">
                       <Settings fontSize="large" />
                     </Tooltip>
-                  </Button> */}
+                  </Button>
                 </div>
               </Card>
             </div>
@@ -459,8 +498,9 @@ export default class Profile extends React.Component {
                   ? this.state.articles.map((item) => (
                       <div style={{ margin: 16 }}>
                         <CustomCard
-                          CardMaxWidth={200}
-                          CardMediaHeight={120}
+                          style={{ width: 300 }}
+                          // CardMaxWidth={200}
+                          // CardMediaHeight={120}
                           ContentTitle={item.title}
                           ContentDescription={""}
                           ButtonTitle1="Edit"
