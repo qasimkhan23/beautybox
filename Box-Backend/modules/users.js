@@ -22,10 +22,19 @@ const userSchema = new mongoose.Schema({
     maxlength: 1024,
     required: true,
   },
+  profileImage: {
+    type: String,
+    default: "1588161921892.jpg",
+  },
 });
 userSchema.methods.generateAuthToken = function() {
   const token = jwt.sign(
-    { _id: this._id, email: this.email, name: this.name },
+    {
+      _id: this._id,
+      email: this.email,
+      name: this.name,
+      profileImage: this.profileImage,
+    },
     config.get("jwtPrivateKey")
   );
   return token;
@@ -33,6 +42,7 @@ userSchema.methods.generateAuthToken = function() {
 userSchema.methods.getUserId = function() {
   return this._id;
 };
+
 const User = mongoose.model("User", userSchema);
 
 const ValidateUser = (user) => {

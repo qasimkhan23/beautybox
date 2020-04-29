@@ -25,12 +25,22 @@ router.get("/me", Auth, async (req, res) => {
   res.send(user);
 });
 
-router.post("/profileimage", upload.single("avatar"), function(req, res) {
-  console.log("==========fileee backenddd", req.file);
-  if (req.file) {
-    res.json(req.file);
-  } else throw "error";
-});
+router.post(
+  "/profileimage",
+  [Auth, upload.single("avatar")],
+  async (req, res) => {
+    if (req.file) {
+      let userProfile = await User.findByIdAndUpdate(
+        { _id: req.user._id },
+        {
+          profileImage: req.file.filename,
+        },
+        { new: true }
+      );
+      res.send(_.pick(userProfile, ["id", "name", "email", "profileImage"]));
+    } else throw "error";
+  }
+);
 
 router.post("/articleimages", upload.array("photos", 12), function(req, res) {
   // req.files is array of `photos` files
