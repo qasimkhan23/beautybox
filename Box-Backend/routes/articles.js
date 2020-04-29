@@ -26,11 +26,13 @@ router.post("/comments", Auth, async (req, res) => {
   if (!article)
     return res.status(404).send("article with the given id is not found");
 
+  console.log("=======profile image======", req.user.profileImage);
   article.comments.push({
     authorid: req.user._id,
     authoremail: req.user.email,
     authorname: req.user.name,
     comment: req.body.comment,
+    profileImage: req.user.profileImage,
   });
   const result = await article.save();
   res.send(result);

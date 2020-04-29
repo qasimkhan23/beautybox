@@ -49,6 +49,9 @@ const articleSchema = new mongoose.Schema({
 
           required: true,
         },
+        profileImage: {
+          type: String,
+        },
       }),
     ],
   },
@@ -72,8 +75,12 @@ const Article = mongoose.model("Article", articleSchema);
 
 const ValidateArticles = (article) => {
   const schema = {
-    title: Joi.string().min(3).required(),
-    body: Joi.string().min(3).required(),
+    title: Joi.string()
+      .min(3)
+      .required(),
+    body: Joi.string()
+      .min(3)
+      .required(),
     // author: Joi.string()
     //     .min(3)
     //     .required(),

@@ -46,6 +46,8 @@ export default class extends React.Component {
       totalPages: null,
       pageBound: 5,
       articles: [],
+      user: null,
+      image: null,
       item: [
         {
           name: "a",
@@ -277,10 +279,17 @@ export default class extends React.Component {
                       {articleComments.map((item) => (
                         <ListItem alignItems="flex-start">
                           <ListItemAvatar>
-                            <Avatar
-                              alt="Remy Sharp"
-                              src={require("../../uploads/1.jpg")}
-                            />
+                            {item.profileImage ? (
+                              <Avatar
+                                alt="Remy Sharp"
+                                src={require(`../../uploads/${item.profileImage}`)}
+                              />
+                            ) : (
+                              <Avatar
+                                alt="Remy Sharp"
+                                src={require(`../../uploads/default.jpg`)}
+                              />
+                            )}
                           </ListItemAvatar>
                           <ListItemText
                             primary={

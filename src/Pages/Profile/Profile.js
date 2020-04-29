@@ -5,6 +5,7 @@ import {
   Card,
   Fade,
   Modal,
+  CircularProgress,
   Tooltip,
   Typography,
 } from "@material-ui/core";
@@ -20,14 +21,17 @@ import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { CustomCard } from "../../components/Card/Card";
 import Header from "../../components/Header/header";
+var images = require.context("../../uploads", true);
 
 export default class Profile extends React.Component {
   constructor(props) {
     super(props);
+    this.globalImagePath = require.context("../../uploads", true);
 
     this.state = {
       open: false,
       editorState: EditorState.createEmpty(),
+      loadImage: false,
       ArticleValue: "",
       title: "",
       articles: [],
@@ -39,10 +43,11 @@ export default class Profile extends React.Component {
       openRead: false,
       user: "",
       file: null,
+      image: null,
     };
   }
 
-  getUsers = () => {
+  getUserInfo = () => {
     fetch(`http://localhost:3000/api/users/me`, {
       method: "GET",
 
@@ -55,7 +60,9 @@ export default class Profile extends React.Component {
       .then((res) => {
         console.log("resss", res);
         this.setState({
-          user: res.name,
+          user: res,
+          loadImage: false,
+          image: require(`../../uploads/${res.profileImage}`),
         });
       })
       .catch((err) => {
@@ -114,7 +121,7 @@ export default class Profile extends React.Component {
 
   componentDidMount() {
     this.getMyArticles();
-    this.getUsers();
+    this.getUserInfo();
   }
   getMyArticles = () => {
     fetch(`http://localhost:3000/api/articles/profile`, {
@@ -221,30 +228,38 @@ export default class Profile extends React.Component {
       openRead: false,
     });
   };
-  uploadImage = () => {
+  uploadImage = (e) => {
+    let file = e.target.files[0];
+
     let form = new FormData();
 
-    form.append("avatar", this.state.file);
-
+    form.append("avatar", file);
+    this.setState({ loadImage: true });
     fetch(`http://localhost:3000/api/users/profileimage`, {
       method: "POST",
 
       body: form,
+      headers: {
+        "x-auth-token": ls.get("token"),
+      },
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log("profile upload", res);
-        // this.handleModal();
-        // this.getMyArticles();
+        console.log("ressssss====upload image=========", res);
+        this.getUserInfo();
+        if (e.target.files[0]) {
+          // ...
+          this.upload.value = "";
+        }
       })
       .catch((err) => {
         console.log("errorrrrre", err);
       });
   };
 
-  onChange = (e) => {
-    this.setState({ file: e.target.files[0] }, () => this.uploadImage());
-  };
+  // onChange = (e) => {
+  //   this.setState({ file: e.target.files[0] }, () => this.uploadImage());
+  // };
   render() {
     const {
       editorState,
@@ -252,7 +267,11 @@ export default class Profile extends React.Component {
       ArticleValue,
       openDelete,
       openRead,
+      loadImage,
+      user,
+      image,
     } = this.state;
+    console.log("userrr", user.profileImage);
 
     return (
       <div>
@@ -451,17 +470,21 @@ export default class Profile extends React.Component {
                   flexDirection: "column",
                 }}
               >
-                <Avatar
-                  src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(34).jpg"
-                  style={{
-                    margin: 10,
-                    width: 160,
-                    height: 160,
-                  }}
-                />
+                {!loadImage ? (
+                  <Avatar
+                    src={image}
+                    style={{
+                      margin: 10,
+                      width: 160,
+                      height: 160,
+                    }}
+                  />
+                ) : (
+                  <CircularProgress />
+                )}
                 <div style={{ marginTop: 8, marginBottom: 8 }}>
                   <Typography variant="h5" component="h2">
-                    {this.state.user}
+                    {this.state.user.name}
                   </Typography>
                 </div>
                 <div style={{ flexDirection: "row" }}>
@@ -476,7 +499,7 @@ export default class Profile extends React.Component {
                     type="file"
                     ref={(ref) => (this.upload = ref)}
                     style={{ display: "none" }}
-                    onChange={this.onChange}
+                    onChange={this.uploadImage}
                   />
 
                   <Button

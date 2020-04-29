@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema({
   },
   profileImage: {
     type: String,
-    default: "1588161921892.jpg",
+    default: "default.jpg",
   },
 });
 userSchema.methods.generateAuthToken = function() {
