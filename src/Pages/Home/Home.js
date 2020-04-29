@@ -112,6 +112,28 @@ export default class extends React.Component {
       );
     });
   };
+  addComment = () => {
+    fetch(`http://localhost:3000/api/articles/comments`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": ls.get("token"),
+      },
+
+      body: JSON.stringify({
+        articleid: this.state.articleId,
+        comment: this.state.publicComment,
+      }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log("=======coment edit ress", res);
+        this.getArticles();
+        this.setState({ articleComments: res.comments });
+      })
+      .catch((err) => console.log(err));
+  };
+
   handleEditComment = (commentId) => {
     fetch(`http://localhost:3000/api/articles/comments/${commentId}`, {
       method: "PUT",
@@ -128,8 +150,29 @@ export default class extends React.Component {
       .then((res) => res.json())
       .then((res) => {
         console.log("=======coment edit ress", res);
+        this.getArticles();
+        this.setState({ articleComments: res.comments });
       })
-      .catch((err) => console.log("errporrrrrrrrrrrrrrrrrrrrrr", err));
+      .catch((err) => console.log(err));
+  };
+  handleDeleteComment = (commentId) => {
+    fetch(`http://localhost:3000/api/articles/comments/${commentId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": ls.get("token"),
+      },
+
+      body: JSON.stringify({
+        articleid: this.state.articleId,
+      }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log("=======coment delete ress", res);
+        this.setState({ articleComments: res.comments });
+      })
+      .catch((err) => console.log(err));
   };
 
   render() {
@@ -208,6 +251,14 @@ export default class extends React.Component {
                           id="input-with-icon-grid"
                           label="Add a Public Comment"
                         />
+                        <MDBBtn
+                          color="primary"
+                          rounded
+                          size="sm"
+                          onClick={this.addComment}
+                        >
+                          Submit
+                        </MDBBtn>
                       </Grid>
                     </Grid>
                   </div>
@@ -281,7 +332,9 @@ export default class extends React.Component {
                               <IconButton
                                 edge="end"
                                 aria-label="delete"
-                                onClick={this.handleDeleteComment}
+                                onClick={() =>
+                                  this.handleDeleteComment(item._id)
+                                }
                               >
                                 <Icon>delete</Icon>
                               </IconButton>
