@@ -90,7 +90,7 @@ class Signin extends React.Component {
               </div>
             </div>
             <div className="row">
-              <div className="col-md-12 col-sm-12 col-xs-12">
+              <form type="submit">
                 <MDBBtn
                   color="primary"
                   rounded
@@ -99,7 +99,7 @@ class Signin extends React.Component {
                 >
                   Submit
                 </MDBBtn>
-              </div>
+              </form>
             </div>
           </Card>
         </div>

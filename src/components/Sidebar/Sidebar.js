@@ -12,7 +12,7 @@ import HomeIcon from "@material-ui/icons/Home";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import PersonIcon from "@material-ui/icons/Person";
-import NavBar from "../NavBar/NavBar";
+import NavBar from "../Navbar/NavBar";
 import { withRouter } from "react-router-dom";
 import LockOpenIcon from "@material-ui/icons/LockOpen";
 import ls from "local-storage";
@@ -90,7 +90,7 @@ class TemporaryDrawer extends React.Component {
         <Divider />
         {ls.get("token") !== null ? (
           <List>
-            {["Signin", "Signup", "Signout"].map((text, index) => (
+            {["Signout"].map((text, index) => (
               <ListItem
                 button
                 key={text}
