@@ -10,6 +10,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import AddCircle from "@material-ui/icons/AddCircle";
+import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
 import Settings from "@material-ui/icons/Settings";
 import { ContentState, convertToRaw, EditorState } from "draft-js";
 import draftToHtml from "draftjs-to-html";
@@ -503,8 +504,8 @@ export default class Profile extends React.Component {
                       this.upload.click();
                     }}
                   >
-                    <Tooltip title="Settings">
-                      <Settings fontSize="large" />
+                    <Tooltip title="Add Profile Image">
+                      <AddAPhotoIcon fontSize="large" />
                     </Tooltip>
                   </Button>
                 </div>

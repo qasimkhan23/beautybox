@@ -378,7 +378,6 @@ export default class extends React.Component {
             </Fade>
           </Modal>
           <div
-            // className="row"
             style={{
               margin: 4,
               marginTop: 24,
@@ -390,7 +389,7 @@ export default class extends React.Component {
               alignItems: "center",
               justifyContent: "center",
             }}
-          >
+          />
             {this.state.articles.length > 0
               ? this.state.articles.map((item) => (
                   <div className="col-md-3" style={{ margin: 16 }}>
@@ -406,7 +405,6 @@ export default class extends React.Component {
                   </div>
                 ))
               : null}
-          </div>
 
           <Pagination
             size="lg"
