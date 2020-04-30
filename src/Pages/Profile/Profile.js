@@ -247,10 +247,6 @@ export default class Profile extends React.Component {
       .then((res) => {
         console.log("ressssss====upload image=========", res);
         this.getUserInfo();
-        if (e.target.files[0]) {
-          // ...
-          this.upload.value = "";
-        }
       })
       .catch((err) => {
         console.log("errorrrrre", err);
