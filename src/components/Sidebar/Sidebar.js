@@ -1,22 +1,20 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
+import Divider from "@material-ui/core/Divider";
 import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
-import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import HomeIcon from "@material-ui/icons/Home";
-import PersonAddIcon from "@material-ui/icons/PersonAdd";
+import { withStyles } from "@material-ui/core/styles";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import PersonIcon from "@material-ui/icons/Person";
-import NavBar from "../Navbar/NavBar";
-import { withRouter } from "react-router-dom";
+import HomeIcon from "@material-ui/icons/Home";
 import LockOpenIcon from "@material-ui/icons/LockOpen";
+import PersonIcon from "@material-ui/icons/Person";
+import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import ls from "local-storage";
-
+import PropTypes from "prop-types";
+import React from "react";
+import { withRouter } from "react-router-dom";
+import NavBar from "../NavBar/NavBar";
 const styles = {
   list: {
     width: 250,
@@ -51,11 +49,9 @@ class TemporaryDrawer extends React.Component {
 
   render() {
     const { classes } = this.props;
-    console.log("props", this.props);
 
     const sideList = (
       <div className={classes.list} style={{ backgroundColor: "#f2f2f2" }}>
-        {console.log("=====================", ls.get("token"))}
         {ls.get("token") !== null ? (
           <List>
             {["Home", "Profile"].map((text, index) => (

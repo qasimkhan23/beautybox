@@ -1,15 +1,14 @@
+import ls from "local-storage";
 import React, { Component } from "react";
-import { Route, Switch } from "react-router-dom";
-import Home from "../Pages/Home/Home";
+import { Redirect, Route, Switch } from "react-router-dom";
 import Gallery from "../Pages/Gallery/Gallery";
+import Home from "../Pages/Home/Home";
 import News from "../Pages/News/news";
+import Profile from "../Pages/Profile/Profile";
+import Settings from "../Pages/Settings/Settings";
 import Signin from "../Pages/Signin/Signin";
 import Signout from "../Pages/Signout/Signout";
-import Profile from "../Pages/Profile/Profile";
 import Signup from "../Pages/Signup/Signup";
-import Settings from "../Pages/Settings/Settings";
-import { Redirect, useHistory, useLocation } from "react-router-dom";
-import ls from "local-storage";
 
 const PrivateRoute = ({ children, ...rest }) => {
   return (

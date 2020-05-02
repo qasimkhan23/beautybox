@@ -12,17 +12,26 @@ import {
 import AddCircle from "@material-ui/icons/AddCircle";
 import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
 import Settings from "@material-ui/icons/Settings";
-import { ContentState, convertToRaw, EditorState } from "draft-js";
+import {
+  ContentState,
+  convertToRaw,
+  EditorState,
+  AtomicBlockUtils,
+} from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import htmlToDraft from "html-to-draftjs";
 import ls from "local-storage";
 import { MDBBtn, MDBContainer, MDBInput } from "mdbreact";
-import React from "react";
-import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { CustomCard } from "../../components/Card/Card";
+import React from "react";
+import { Editor } from "react-draft-wysiwyg";
+// import Editor from "draft-js-plugins-editor";
+import createImagePlugin from "draft-js-image-plugin";
+import createToolbarPlugin from "draft-js-static-toolbar-plugin";
+import { Pagination } from "react-bootstrap";
+
 import Header from "../../components/Header/header";
-var images = require.context("../../uploads", true);
 
 export default class Profile extends React.Component {
   constructor(props) {
@@ -45,6 +54,11 @@ export default class Profile extends React.Component {
       user: "",
       file: null,
       image: null,
+      activePage: 0,
+      totalPages: null,
+      pageBound: 5,
+      item: [],
+      notFound: "",
     };
   }
 
@@ -59,7 +73,6 @@ export default class Profile extends React.Component {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log("resss", res);
         this.setState({
           user: res,
           loadImage: false,
@@ -67,7 +80,7 @@ export default class Profile extends React.Component {
         });
       })
       .catch((err) => {
-        console.log("errorrrrre", err);
+        console.log("error", err);
       });
   };
   closeModal = () => {
@@ -80,12 +93,14 @@ export default class Profile extends React.Component {
   handleModal = () => {
     this.setState({
       open: !this.state.open,
+      editorState: EditorState.createEmpty(),
     });
   };
   handleDeleteModal = (id) => {
     this.setState({
       openDelete: !this.state.openDelete,
       id: id,
+      editorState: EditorState.createEmpty(),
     });
   };
   handleEditModal = (title, body, id) => {
@@ -114,7 +129,6 @@ export default class Profile extends React.Component {
     });
   };
   onEditorStateChange = (editorState) => {
-    console.log("editor state", convertToRaw(editorState.getCurrentContent()));
     this.setState({
       editorState,
     });
@@ -125,28 +139,34 @@ export default class Profile extends React.Component {
     this.getUserInfo();
   }
   getMyArticles = () => {
-    fetch(`http://localhost:3000/api/articles/profile`, {
-      method: "POST",
+    fetch(
+      `http://localhost:3000/api/articles/profile?pageNumber=${this.state
+        .activePage + 1}&pageSize=6`,
+      {
+        method: "GET",
 
-      headers: {
-        "Content-Type": "application/json",
-        "x-auth-token": ls.get("token"),
-      },
-    })
+        headers: {
+          "Content-Type": "application/json",
+          "x-auth-token": ls.get("token"),
+        },
+      }
+    )
       .then((res) => res.json())
       .then((res) => {
-        console.log("resss", res);
-        //         const blocksFromHtml = htmlToDraft(res[0].body);
-        // const { contentBlocks, entityMap } = blocksFromHtml;
-        // const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
-        // const editorState = EditorState.createWithContent(contentState);
-        // this.setState({
-        //   test:blocksFromHtml
-        // })
-        this.setState({
-          articles: res,
-        });
+        if (res.status == 404) {
+          this.setState({ notFound: res.message });
+        } else {
+          let temp = [];
+          for (let i = 0; i < res.totalCount; i++) {
+            temp.push({});
+          }
+          this.setState({
+            articles: res.articles,
+            item: temp,
+          });
+        }
       })
+
       .catch((err) => {
         console.log("errorrrrre", err);
       });
@@ -166,7 +186,6 @@ export default class Profile extends React.Component {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log("resss", res);
         this.handleModal();
         this.getMyArticles();
       })
@@ -189,7 +208,6 @@ export default class Profile extends React.Component {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log("resss", res);
         this.handleModal();
         this.getMyArticles();
         this.setState({ edit: false });
@@ -209,7 +227,6 @@ export default class Profile extends React.Component {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log("resss", res);
         this.handleDeleteModal();
         this.getMyArticles();
       })
@@ -246,7 +263,6 @@ export default class Profile extends React.Component {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log("ressssss====upload image=========", res);
         this.getUserInfo();
       })
       .catch((err) => {
@@ -254,9 +270,20 @@ export default class Profile extends React.Component {
       });
   };
 
-  // onChange = (e) => {
-  //   this.setState({ file: e.target.files[0] }, () => this.uploadImage());
-  // };
+  uploadImageCallBack = (file) => {
+    return new Promise((resolve, reject) => {
+      resolve({
+        data: {
+          link: require(file),
+        },
+      });
+    });
+  };
+  onChange = (e) => {
+    this.setState({
+      ArticleValue: draftToHtml(e),
+    });
+  };
   render() {
     const {
       editorState,
@@ -268,12 +295,11 @@ export default class Profile extends React.Component {
       user,
       image,
     } = this.state;
-    console.log("userrr", user.profileImage);
 
     return (
       <div>
         <Header />
-        <MDBContainer style={{ backgroundColor: "#f7f7f7" }}>
+        <MDBContainer style={{ backgroundColor: "#f7f7f7", padding: 8 }}>
           <Modal
             aria-labelledby="transition-modal-title"
             aria-describedby="transition-modal-description"
@@ -303,8 +329,15 @@ export default class Profile extends React.Component {
                 }}
               >
                 <h4>{this.state.readTitle}</h4>
-
+                {/* <style jsx>
+                  {`
+                    img {
+                      height: 400px;
+                    }
+                  `}
+                </style> */}
                 <div
+                  style={{ textAlign: "justify" }}
                   dangerouslySetInnerHTML={{ __html: this.state.readBody }}
                 />
 
@@ -345,11 +378,11 @@ export default class Profile extends React.Component {
                   // height: 600,
                   // width: 800,
                   padding: 16,
-                  overflowY: "scroll",
+                  // overflowY: "scroll",
                 }}
               >
                 Are you sure you want to delete this Article?
-                <div dangerouslySetInnerHTML={{ __html: ArticleValue }} />
+                {/* <div dangerouslySetInnerHTML={{ __html: ArticleValue }} /> */}
                 <MDBBtn
                   color="primary"
                   rounded
@@ -392,7 +425,7 @@ export default class Profile extends React.Component {
                   // border: "2px solid #000",
                   // boxShadow: the,
                   height: 600,
-                  width: 1200,
+                  width: 1000,
                   padding: 64,
                   overflowY: "scroll",
                 }}
@@ -412,23 +445,21 @@ export default class Profile extends React.Component {
                     wrapperClassName="wrapperClassName"
                     editorClassName="editorClassName"
                     onEditorStateChange={this.onEditorStateChange}
-                    onChange={(e) =>
-                      this.setState({
-                        ArticleValue: draftToHtml(e),
-                      })
-                    }
+                    // toolbar={{
+                    //   image: {
+                    //     uploadCallback: this.uploadImageCallBack,
+                    //     alt: { present: true, mandatory: false },
+                    //   },
+                    // }}
+                    onChange={(e) => this.onChange(e)}
                   />
-
-                  <textarea disabled value={ArticleValue} />
-                  <textarea disabled value={this.state.test} />
-
-                  <div dangerouslySetInnerHTML={{ __html: ArticleValue }} />
                 </p>
                 {this.state.edit == true ? (
                   <MDBBtn
                     color="primary"
                     rounded
                     size="md"
+                    style={{ marginTop: 400 }}
                     onClick={this.handleEdit}
                   >
                     Publish
@@ -438,6 +469,7 @@ export default class Profile extends React.Component {
                     color="primary"
                     rounded
                     size="md"
+                    style={{ marginTop: 400 }}
                     onClick={this.handlePublish}
                   >
                     Publish
@@ -514,37 +546,103 @@ export default class Profile extends React.Component {
             <div className="col-md-1"></div>
             <div className="col-md-8">
               <div className="row">
-                {this.state.articles.length > 0
-                  ? this.state.articles.map((item) => (
-                      <div style={{ margin: 16 }}>
-                        <CustomCard
-                          style={{ width: 300 }}
-                          // CardMaxWidth={200}
-                          // CardMediaHeight={120}
-                          ContentTitle={item.title}
-                          ContentDescription={""}
-                          ButtonTitle1="Edit"
-                          onClickButton1={() =>
-                            this.handleEditModal(
-                              item.title,
-                              item.body,
-                              item._id
-                            )
-                          }
-                          ButtonTitle2="Delete"
-                          onClickButton2={() =>
-                            this.handleDeleteModal(item._id)
-                          }
-                          onClick={() =>
-                            this.handleReadModal(item.title, item.body)
-                          }
-                        />
-                      </div>
-                    ))
-                  : null}
+                {this.state.articles.length > 0 ? (
+                  this.state.articles.map((item) => (
+                    <div style={{ margin: 16 }}>
+                      <CustomCard
+                        style={{ width: 300 }}
+                        // CardMaxWidth={200}
+                        // CardMediaHeight={120}
+                        ContentTitle={item.title}
+                        ContentDescription={""}
+                        ButtonTitle1="Edit"
+                        onClickButton1={() =>
+                          this.handleEditModal(item.title, item.body, item._id)
+                        }
+                        ButtonTitle2="Delete"
+                        onClickButton2={() => this.handleDeleteModal(item._id)}
+                        onImageClick={() =>
+                          this.handleReadModal(item.title, item.body)
+                        }
+                      />
+                    </div>
+                  ))
+                ) : (
+                  <div
+                    style={{
+                      flex: 1,
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <p>{this.state.notFound}</p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
+          <Pagination
+            size="lg"
+            style={{
+              display: "flex",
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              margin: 16,
+              marginBottom: 100,
+            }}
+          >
+            <Pagination.Prev
+              onClick={() =>
+                this.setState(
+                  {
+                    activePage:
+                      this.state.activePage > 0
+                        ? this.state.activePage - 1
+                        : this.state.activePage,
+                  },
+                  () => this.getMyArticles()
+                )
+              }
+            />
+
+            {this.state.item.map((item, index) =>
+              index < this.state.pageBound - 1 ? (
+                <div>
+                  {index === this.state.activePage ? (
+                    <Pagination.Item active={index + 1}>
+                      {index + 1}
+                    </Pagination.Item>
+                  ) : (
+                    <Pagination.Item
+                      onClick={() =>
+                        this.setState({ activePage: index }, () =>
+                          this.getMyArticles()
+                        )
+                      }
+                    >
+                      {index + 1}
+                    </Pagination.Item>
+                  )}
+                </div>
+              ) : null
+            )}
+
+            <Pagination.Next
+              onClick={() =>
+                this.setState(
+                  {
+                    activePage:
+                      this.state.activePage < this.state.item.length - 1
+                        ? this.state.activePage + 1
+                        : this.state.activePage,
+                  },
+                  () => this.getMyArticles()
+                )
+              }
+            />
+          </Pagination>
         </MDBContainer>
       </div>
     );

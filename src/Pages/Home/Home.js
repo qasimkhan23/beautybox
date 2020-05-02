@@ -1,34 +1,27 @@
-import { CustomCard } from "../../components/Card/Card";
-import React from "react";
-import { Pagination } from "react-bootstrap";
-import Header from "../../components/Header/header";
-import Slider from "../../components/Slideshow/Slideshow";
-import ls from "local-storage";
 import {
   Avatar,
   Backdrop,
-  Button,
-  Card,
   Fade,
-  Modal,
-  ListItemAvatar,
-  ListItemText,
-  Tooltip,
-  ListItemSecondaryAction,
-  ListItem,
-  List,
-  Typography,
   Grid,
-  ListItemIcon,
   IconButton,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemSecondaryAction,
+  ListItemText,
+  Modal,
   TextField,
+  Typography,
 } from "@material-ui/core";
-// import { DeleteIcon, PencilIcon } from "@material-ui/icons";
 import Icon from "@material-ui/core/Icon";
-
-import { MDBBtn, MDBContainer, MDBInput } from "mdbreact";
-
 import AccountCircle from "@material-ui/icons/AccountCircle";
+import ls from "local-storage";
+import { MDBBtn, MDBContainer } from "mdbreact";
+import React from "react";
+import { Pagination } from "react-bootstrap";
+import { CustomCard } from "../../components/Card/Card";
+import Header from "../../components/Header/header";
+import Slider from "../../components/Slideshow/Slideshow";
 
 export default class extends React.Component {
   constructor(props) {
@@ -41,36 +34,21 @@ export default class extends React.Component {
       articleComments: [],
       article: null,
       activePage: 0,
-      upperPageBound: 5,
-      lowerPageBound: 5,
       totalPages: null,
       pageBound: 5,
       articles: [],
       user: null,
       image: null,
-      item: [
-        {
-          name: "a",
-        },
-        {
-          name: "b",
-        },
-        {
-          name: "b",
-        },
-        {
-          name: "b",
-        },
-      ],
+      item: [],
     };
   }
   handlePageChange(pageNumber) {
-    console.log(`active page is ${pageNumber}`);
     this.setState({ activePage: pageNumber });
   }
   getArticles = () => {
     fetch(
-      `http://localhost:3000/api/articles?pageNumber=${this.state.activePage}&pageSize=6`,
+      `http://localhost:3000/api/articles?pageNumber=${this.state.activePage +
+        1}&pageSize=6`,
       {
         method: "GET",
         headers: {
@@ -114,9 +92,7 @@ export default class extends React.Component {
       if (item._id == commentId) {
         temp[index]["edit"] = true;
       }
-      this.setState({ articleComments: temp }, () =>
-        console.log("comments", this.state.articleComments)
-      );
+      this.setState({ articleComments: temp });
     });
   };
   addComment = () => {
@@ -134,7 +110,6 @@ export default class extends React.Component {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log("=======coment edit ress", res);
         this.getArticles();
         this.setState({ articleComments: res.comments });
       })
@@ -156,7 +131,6 @@ export default class extends React.Component {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log("=======coment edit ress", res);
         this.getArticles();
         this.setState({ articleComments: res.comments });
       })
@@ -176,7 +150,6 @@ export default class extends React.Component {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log("=======coment delete ress", res);
         this.setState({ articleComments: res.comments });
       })
       .catch((err) => console.log(err));
@@ -218,7 +191,13 @@ export default class extends React.Component {
                 }}
               >
                 <h4>{this.state.readTitle}</h4>
-
+                <style jsx>
+                  {`
+                    img {
+                      height: 400px;
+                    }
+                  `}
+                </style>
                 <div
                   style={{ textAlign: "justify", flex: 1 }}
                   dangerouslySetInnerHTML={{ __html: this.state.readBody }}
@@ -389,10 +368,14 @@ export default class extends React.Component {
               alignItems: "center",
               justifyContent: "center",
             }}
-          />
+          >
             {this.state.articles.length > 0
               ? this.state.articles.map((item) => (
-                  <div className="col-md-3" style={{ margin: 16 }}>
+                  <div
+                    key={item.title}
+                    className="col-md-3"
+                    style={{ margin: 16 }}
+                  >
                     <CustomCard
                       ContentTitle={item.title}
                       ContentDescription={item.body}
@@ -405,7 +388,7 @@ export default class extends React.Component {
                   </div>
                 ))
               : null}
-
+          </div>
           <Pagination
             size="lg"
             style={{
@@ -419,18 +402,21 @@ export default class extends React.Component {
           >
             <Pagination.Prev
               onClick={() =>
-                this.setState({
-                  activePage:
-                    this.state.activePage > 0
-                      ? this.state.activePage - 1
-                      : this.state.activePage,
-                })
+                this.setState(
+                  {
+                    activePage:
+                      this.state.activePage > 0
+                        ? this.state.activePage - 1
+                        : this.state.activePage,
+                  },
+                  () => this.getArticles()
+                )
               }
             />
 
             {this.state.item.map((item, index) =>
               index < this.state.pageBound - 1 ? (
-                <div>
+                <div key={index}>
                   {index === this.state.activePage ? (
                     <Pagination.Item active={index + 1}>
                       {index + 1}
@@ -452,12 +438,15 @@ export default class extends React.Component {
 
             <Pagination.Next
               onClick={() =>
-                this.setState({
-                  activePage:
-                    this.state.activePage < this.state.item.length - 1
-                      ? this.state.activePage + 1
-                      : this.state.activePage,
-                })
+                this.setState(
+                  {
+                    activePage:
+                      this.state.activePage < this.state.item.length - 1
+                        ? this.state.activePage + 1
+                        : this.state.activePage,
+                  },
+                  () => this.getArticles()
+                )
               }
             />
           </Pagination>

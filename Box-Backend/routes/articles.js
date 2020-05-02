@@ -3,15 +3,38 @@ const router = express.Router();
 const Joi = require("joi");
 
 const { Auth } = require("../middlewares/auth");
+const { getUser } = require("../middlewares/getUser");
+
 const { Validate, Article } = require("../modules/articles");
 router.get("/", async (req, res) => {
   const result = await Article.find({ isPublished: true })
-    .skip((req.query.pageSize - 1) * req.query.pageNumber)
+    .skip(req.query.pageSize * req.query.pageNumber - req.query.pageSize)
     .limit(parseInt(req.query.pageSize));
   let totalCount = await Article.countDocuments();
   totalCount = totalCount / 6;
   totalCount = Math.ceil(totalCount);
   res.send({ articles: result, totalCount });
+});
+router.get("/profile", Auth, async (req, res) => {
+  const result = await Article.find({
+    isPublished: true,
+    "author._id": req.user._id,
+  })
+    .skip(req.query.pageSize * req.query.pageNumber - req.query.pageSize)
+
+    .limit(parseInt(req.query.pageSize));
+
+  let totalCount = await Article.find({
+    isPublished: true,
+    "author._id": req.user._id,
+  }).countDocuments();
+  totalCount = totalCount / 6;
+  totalCount = Math.ceil(totalCount);
+
+  if (result.length < 1)
+    return res.send({ status: 404, message: "You dont have any articles yet" });
+  res.send({ articles: result, totalCount });
+  // res.send({ req: result });
 });
 router.get("/:id", async (req, res) => {
   const result = await Article.findById(req.params.id);
@@ -19,20 +42,19 @@ router.get("/:id", async (req, res) => {
     return res.status(404).send("the article with the given id not found");
   res.send(result);
 });
-router.post("/comments", Auth, async (req, res) => {
+router.post("/comments", [Auth, getUser], async (req, res) => {
   const { error } = ValidateComments(req.body);
   if (error) return res.status(400).send(error.details[0].message);
   const article = await Article.findById(req.body.articleid);
   if (!article)
     return res.status(404).send("article with the given id is not found");
 
-  console.log("=======profile image======", req.user.profileImage);
   article.comments.push({
     authorid: req.user._id,
     authoremail: req.user.email,
     authorname: req.user.name,
     comment: req.body.comment,
-    profileImage: req.user.profileImage,
+    profileImage: req.userInfo.profileImage,
   });
   const result = await article.save();
   res.send(result);
@@ -40,7 +62,6 @@ router.post("/comments", Auth, async (req, res) => {
 
 router.put("/comments/:id", Auth, async (req, res) => {
   const { error } = ValidateComments(req.body);
-  console.log("erorrr in backend", req.body);
   if (error) return res.status(400).send(error.details[0].message);
   const article = await Article.findById(req.body.articleid);
   if (!article)
@@ -69,29 +90,12 @@ router.delete("/comments/:id", Auth, async (req, res) => {
   res.send(result);
 });
 
-router.post("/profile", Auth, async (req, res) => {
-  console.log("profilee", req.user);
-  const result = await Article.find({
-    isPublished: true,
-    // author: { _id: req.user._id },
-    "author._id": req.user._id,
-  });
-  // const result = await Article.find({
-  //   // name: req.body.name,
-  //   // author: { name: "ali" }
-  // });
-  console.log("resultttt", result);
-  if (result.length < 1)
-    return res.status(404).send("You dont have any articles yet");
-  res.send(result);
-});
 router.post("/", Auth, async (req, res) => {
   const { error } = Validate(req.body);
   const a = await Article.find({
     title: req.body.title,
     "author._id": req.user._id,
   });
-  console.log("same name", a);
   if (a.length > 0)
     return res.send("Article already exist with the same title");
   if (error) return res.status(400).send(error.details[0].message);
@@ -107,9 +111,6 @@ router.post("/", Auth, async (req, res) => {
     isPublished: req.body.isPublished,
   });
   try {
-    // article.validate(err => {
-    //   if (err) return res.send(err.errors.tags.message);
-    // });
     const result = await article.save();
     res.send(result);
   } catch (ex) {
@@ -135,7 +136,6 @@ router.put("/:id", Auth, async (req, res) => {
     },
     { new: true }
   );
-  console.log("reqqqqq", article);
 
   if (!article)
     return res.status(404).send("article with the given id is not found");

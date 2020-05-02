@@ -43,8 +43,6 @@ router.post(
 );
 
 router.post("/articleimages", upload.array("photos", 12), function(req, res) {
-  // req.files is array of `photos` files
-  // req.body will contain the text fields, if there were any
   if (req.files) {
     res.json(req.files);
   } else throw "error";
@@ -53,7 +51,6 @@ router.post("/articleimages", upload.array("photos", 12), function(req, res) {
 router.post("/", async (req, res) => {
   const { error } = Validate(req.body);
 
-  console.log("loggoing error", error);
   if (error) return res.status(400).send(error.details[0].message);
 
   let user = await User.findOne({ email: req.body.email });

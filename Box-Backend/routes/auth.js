@@ -9,7 +9,6 @@ const _ = require("lodash");
 router.post("/", async (req, res) => {
   const { error } = Validate(req.body);
 
-  console.log("loggoing error", error);
   if (error) return res.status(400).send(error.details[0].message);
 
   let user = await User.findOne({ email: req.body.email });

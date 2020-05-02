@@ -19,6 +19,7 @@ export const CustomCard = (props) => {
     >
       <CardActionArea>
         <CardMedia
+          onClick={props.onImageClick}
           style={{ height: props.CardMediaHeight }}
           image={props.image}
           title={props.title}
@@ -27,14 +28,11 @@ export const CustomCard = (props) => {
           <Typography gutterBottom variant="h5" component="h2" noWrap>
             {props.ContentTitle}
           </Typography>
-          <Typography
-            variant="body2"
-            color="textSecondary"
-            component="p"
-            noWrap
-          >
-            {props.ContentDescription}
-          </Typography>
+
+          <div
+            style={{ textAlign: "justify" }}
+            dangerouslySetInnerHTML={{ __html: props.ContentDescription }}
+          />
         </CardContent>
       </CardActionArea>
       <CardActions>
