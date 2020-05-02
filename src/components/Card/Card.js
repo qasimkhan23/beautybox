@@ -25,14 +25,24 @@ export const CustomCard = (props) => {
           title={props.title}
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="h2" noWrap>
+          <Typography gutterBottom variant="h5" component="h5" noWrap>
             {props.ContentTitle}
           </Typography>
+          {/* <Typography variant="body2" gutterBottom>
+            {props.ContentDescription}
+          </Typography> */}
 
-          <div
-            style={{ textAlign: "justify" }}
+          {/* <div
+            style={{
+              textAlign: "justify",
+              display: "webkitBox",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              webkitLineClamp: 3,
+              webkiBboxOrient: "vertical",
+            }}
             dangerouslySetInnerHTML={{ __html: props.ContentDescription }}
-          />
+          /> */}
         </CardContent>
       </CardActionArea>
       <CardActions>

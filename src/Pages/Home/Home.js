@@ -22,6 +22,7 @@ import { Pagination } from "react-bootstrap";
 import { CustomCard } from "../../components/Card/Card";
 import Header from "../../components/Header/header";
 import Slider from "../../components/Slideshow/Slideshow";
+import htmlToDraft from "html-to-draftjs";
 
 export default class extends React.Component {
   constructor(props) {
@@ -191,13 +192,13 @@ export default class extends React.Component {
                 }}
               >
                 <h4>{this.state.readTitle}</h4>
-                <style jsx>
+                {/* <style jsx>
                   {`
                     img {
                       height: 400px;
                     }
                   `}
-                </style>
+                </style> */}
                 <div
                   style={{ textAlign: "justify", flex: 1 }}
                   dangerouslySetInnerHTML={{ __html: this.state.readBody }}
